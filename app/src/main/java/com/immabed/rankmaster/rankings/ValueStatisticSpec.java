@@ -1,9 +1,12 @@
 package com.immabed.rankmaster.rankings;
 
-import java.util.jar.Pack200;
+
+import android.renderscript.Sampler;
+
+import java.util.ArrayList;
 
 /**
- * Created by Immabed on 2016-03-18.
+ * Created by Brady Coles on 2016-03-18.
  */
 public class ValueStatisticSpec extends StatisticSpec {
 
@@ -22,8 +25,9 @@ public class ValueStatisticSpec extends StatisticSpec {
      * @param min If there is a minimum bound, this is it. If not, enter anything.
 
      */
-    public ValueStatisticSpec(boolean isInteger, boolean hasMaxBound, boolean hasMinBound, double max,
-                            double min) {
+    public ValueStatisticSpec(String name, boolean isInteger, boolean hasMaxBound, boolean hasMinBound,
+                              double max, double min) {
+        super(name);
         this.isInteger = isInteger;
         this.hasMaxBound = hasMaxBound;
         this.hasMinBound = hasMinBound;
@@ -33,7 +37,7 @@ public class ValueStatisticSpec extends StatisticSpec {
 
     /**
      * Checks if the statistic value must be an integer.
-     * @return true if value must be an integer, false if value can be any real.
+     * @return true if value must be an integer, false if value can be any real number.
      */
     public boolean valueIsInteger() {
         return isInteger;
@@ -71,6 +75,24 @@ public class ValueStatisticSpec extends StatisticSpec {
     public double getMinValue(){
         // TODO: Throw no min value exception
         return min;
+    }
+
+    /**
+     * Accepts and array
+     * @param statistics An array of statistics, these statistics should be of type ValueStatistic
+     *                   and have the same id as this ValueStatisticSpec.
+     * @return The string representation of the combined value of the inputted statistics, if those
+     * statistics are of the right type (ValueStatistic), and have the same id as this Spec.
+     */
+    public String getStatisticString(Statistic[] statistics) {
+        double sum = 0;
+        for (Statistic statistic : statistics) {
+            if (statistic instanceof ValueStatistic && statistic.getStatisticSpecId().equals(getId())) {
+                sum += ((ValueStatistic)statistic).getValue();
+            }
+        }
+        // TODO: String formatting
+        return Double.toString(sum);
     }
 
 

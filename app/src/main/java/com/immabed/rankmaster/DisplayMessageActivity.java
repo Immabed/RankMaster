@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.immabed.rankmaster.rankings.ValueStatisticSpec;
+
 public class DisplayMessageActivity extends AppCompatActivity {
 
     @Override
@@ -29,11 +31,13 @@ public class DisplayMessageActivity extends AppCompatActivity {
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        ValueStatisticSpec spec = new ValueStatisticSpec("Points", true, true, false, 100, 0);
+
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
         TextView textView = new TextView(this);
         textView.setTextSize(40);
-        textView.setText(message);
+        textView.setText(spec.getId());
 
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.content);
         layout.addView(textView);
