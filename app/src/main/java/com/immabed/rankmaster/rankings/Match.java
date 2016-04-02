@@ -103,6 +103,25 @@ public class Match implements Comparable<Match> {
     }
 
     /**
+     * Changes a statistic for a player for the match.
+     * @param player A player who has already been added to the match.
+     * @param statistic A statistic to replace an existing statistic with.
+     * @throws PlayerNotFoundException If no player with the id of the player argument is found, a
+     * PlayerNotFoundException is thrown.
+     * @throws StatisticDoesNotExistException If not statistic with the same id as the statistic
+     * argument is found, a StatisticDoesNotExistException is thrown.
+     */
+    public void changeStatistic(Player player, Statistic statistic)
+            throws PlayerNotFoundException, StatisticDoesNotExistException {
+        for (PlayerAndStatistics playerAndStatistics : players) {
+            if (player.getId().equals(playerAndStatistics.player.getId())) {
+                playerAndStatistics.replaceStatistic(statistic);
+            }
+        }
+        throw new PlayerNotFoundException();
+    }
+
+    /**
      * Add statistics to an existing player in the match. Player should already be added to match,
      * and statistics added should not already be added to the match. If a statistic with the same id
      * as a statistic already attributed to the player for the match is added, it will be ignored.
