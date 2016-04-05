@@ -1,6 +1,8 @@
 package com.immabed.rankmaster.rankings.compare;
 
 import com.immabed.rankmaster.rankings.Player;
+import com.immabed.rankmaster.rankings.RankTable;
+import com.immabed.rankmaster.rankings.Statistic;
 import com.immabed.rankmaster.rankings.StatisticSpec;
 
 /**
@@ -10,10 +12,20 @@ public abstract class Ranking {
 
     private StatisticSpec spec;
     private Ranking secondaryRanking;
+    private RankTable rankTable;
 
 
-    public Ranking(StatisticSpec spec) {
+    public Ranking(StatisticSpec spec, RankTable rankTable) {
         this.spec = spec;
+        this.rankTable = rankTable;
+    }
+
+    protected RankTable getRankTable() {
+        return rankTable;
+    }
+
+    protected StatisticSpec getSpec() {
+        return spec;
     }
 
     public void addSecondaryRanking(Ranking ranking) {

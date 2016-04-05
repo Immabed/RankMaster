@@ -152,6 +152,15 @@ public class Match implements Comparable<Match> {
         throw new PlayerNotFoundException(String.format("Player %s not found in match.", player));
     }
 
+    public Statistic[] getPlayerStatisticsOfType(Player player, StatisticSpec spec) {
+        for (PlayerAndStatistics playerAndStatistics : players) {
+            if (playerAndStatistics.player.getId().equals(player.getId())) {
+                return playerAndStatistics.getStatistics(spec.getId());
+            }
+        }
+        return new Statistic[0];
+    }
+
     /**
      * Change the date that the match took place at.
      * @param year The year (eg. 2011)
@@ -174,7 +183,6 @@ public class Match implements Comparable<Match> {
     @Override
     public int compareTo(Match another) {
         return (date.compareTo(another.date));
-
     }
 
 
@@ -196,7 +204,7 @@ public class Match implements Comparable<Match> {
          * @param player The player to add to the match.
          * @param statistics Any number of statistics objects to add to the player for the match.
          */
-        PlayerAndStatistics(Player player, Statistic ... statistics) {
+        public PlayerAndStatistics(Player player, Statistic ... statistics) {
             this.player = player;
             for (Statistic statistic: statistics) {
                 try {
@@ -206,6 +214,16 @@ public class Match implements Comparable<Match> {
                     //TODO :Catch exception
                 }
             }
+        }
+
+        private Statistic[] getStatistics(String statisticId) {
+            ArrayList<Statistic> returnStatistics = new ArrayList<>();
+            for (Statistic statistic : statistics) {
+                if (statistic.getStatisticSpecId().equals(statisticId)) {
+                    returnStatistics.add(statistic);
+                }
+            }
+            return (Statistic[])returnStatistics.toArray();
         }
 
         /**

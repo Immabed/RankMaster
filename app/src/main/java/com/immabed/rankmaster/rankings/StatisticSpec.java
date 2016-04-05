@@ -39,4 +39,6 @@ public abstract class StatisticSpec {
     }
 
     public abstract String getStatisticString(Statistic[] statistics);
+
+    public abstract double getValue(Statistic[] statistics);
 }

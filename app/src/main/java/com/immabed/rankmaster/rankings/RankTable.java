@@ -12,4 +12,17 @@ public class RankTable {
     private ArrayList<Match> matches;
     private ArrayList<StatisticSpec> statisticSpecs;
     private Ranking mainRanking;
+
+
+    public Statistic[] getStatisticsBySpec(Player player, StatisticSpec statisticSpec) {
+        ArrayList<Statistic> statistics = new ArrayList<>();
+        for (Match match : matches) {
+            for(Statistic statistic: match.getPlayerStatisticsOfType(player, statisticSpec)) {
+                statistics.add(statistic);
+            }
+        }
+        return (Statistic[])statistics.toArray();
+    }
+
+
 }

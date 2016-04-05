@@ -15,6 +15,7 @@ public class ValueStatisticSpec extends StatisticSpec {
     private double max;
     private boolean hasMinBound;
     private double min;
+    private int decimalPlaces;
 
     /**
      * All parameters must be supplied. Values that are unneeded can be anything at all.
@@ -26,13 +27,14 @@ public class ValueStatisticSpec extends StatisticSpec {
 
      */
     public ValueStatisticSpec(String name, boolean isInteger, boolean hasMaxBound, boolean hasMinBound,
-                              double max, double min) {
+                              double max, double min, int decimalPlaces) {
         super(name);
         this.isInteger = isInteger;
         this.hasMaxBound = hasMaxBound;
         this.hasMinBound = hasMinBound;
         this.max = max;
         this.min = min;
+        this.decimalPlaces = decimalPlaces;
     }
 
     /**
@@ -85,14 +87,17 @@ public class ValueStatisticSpec extends StatisticSpec {
      * statistics are of the right type (ValueStatistic), and have the same id as this Spec.
      */
     public String getStatisticString(Statistic[] statistics) {
+        return String.format("%."+decimalPlaces+"f",getValue(statistics));
+    }
+
+    public double getValue(Statistic[] statistics) {
         double sum = 0;
         for (Statistic statistic : statistics) {
             if (statistic instanceof ValueStatistic && statistic.getStatisticSpecId().equals(getId())) {
                 sum += ((ValueStatistic)statistic).getValue();
             }
         }
-        // TODO: String formatting
-        return Double.toString(sum);
+        return sum;
     }
 
 
