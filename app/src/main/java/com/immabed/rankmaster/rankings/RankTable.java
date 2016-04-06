@@ -24,7 +24,7 @@ public class RankTable {
         ValueStatisticSpec newSpec = new ValueStatisticSpec("Points", true, false, true, 0, 0, 0);
         statisticSpecs = new ArrayList<>();
         statisticSpecs.add(newSpec);
-        mainRanking = new SumRanking(newSpec, this, SumRanking.RankCriteria.MAXIMUM, 0);
+        mainRanking = new SumRanking(newSpec, this, SumRanking.RankCriteria.MAXIMUM, 0, SumRanking.GamesPlayedComparison.AVERAGE_PER_GAME);
         Player player1 = new Player("Brady");
         Player player2 = new Player("Steve");
         Player player3 = new Player("Gord");
@@ -37,6 +37,7 @@ public class RankTable {
             match2.addPlayer(player3, new ValueStatistic(newSpec, 41));
             match2.addPlayer(player1, new ValueStatistic(newSpec, 21));
             match3.addPlayer(player2, new ValueStatistic(newSpec, 18));
+            match3.addPlayer(player1, new ValueStatistic(newSpec, 9));
         }
         catch (PlayerAlreadyExistsException e) {
             // Do nothing
@@ -48,14 +49,56 @@ public class RankTable {
         sortPlayers();
     }
 
+    /**
+     * Add a match to the rank table.
+     * @param match A match with the statistics being from this rank table. If the statistics are not
+     *              from this rank table, then they will not be displayed or used for ranking.
+     */
+    public void addMatch(Match match) {
+        if (match != null)
+            matches.add(match);
+    }
+
+    /**
+     * Returns the number of games a player has played.
+     * @param player A player who has played a game in this rank table. If a player is not in the
+     *               rank table, returns zero.
+     * @return The number of games the player argument has played in the calling rank table.
+     */
+    public int getGamesPlayed(Player player) {
+        int gamesPlayed = 0;
+        for (Match match : matches) {
+            if (match.hasPlayer(player)) {
+                gamesPlayed++;
+            }
+        }
+        return gamesPlayed;
+    }
+
+    /**
+     * Gets the players in the rank table.
+     * @return The list of players in the rank table, sorted according to the main ranking.
+     */
     public Player[] getPlayers() {
+        sortPlayers();
         return players.toArray(new Player[players.size()]);
     }
 
+    /**
+     * Gets an array of the statisticSpecs used by the rank table.
+     * @return An array of the statisticSpecs used by the rank table.
+     */
     public StatisticSpec[] getStatisticSpecs () {
         return statisticSpecs.toArray(new StatisticSpec[statisticSpecs.size()]);
     }
 
+    /**
+     * Gets all statistics of a certain spec for a specific player from all matches in the rank table.
+     * @param player The player to get statistics for.
+     * @param statisticSpec The spec of the statistics to get.
+     * @return An array of all statistics of the id of argument statisticSpec that belong to the
+     * player, taken from all matches in the rank table.
+     */
     public Statistic[] getStatisticsBySpec(Player player, StatisticSpec statisticSpec) {
         ArrayList<Statistic> statistics = new ArrayList<>();
         for (Match match : matches) {
@@ -106,7 +149,7 @@ public class RankTable {
      * @param startingArray An int array to be sorted.
      * @return A copy of startingArray sorted in increasing order.
      */
-    public Player[] mergeSort(Player[] startingArray) {
+    private Player[] mergeSort(Player[] startingArray) {
         // Check if array has any elements.
         if (startingArray == null || startingArray.length == 0) {
             System.out.println("Error has occurred, tried to sort empty array.");
