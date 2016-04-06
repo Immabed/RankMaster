@@ -152,6 +152,28 @@ public class Match implements Comparable<Match> {
         throw new PlayerNotFoundException(String.format("Player %s not found in match.", player));
     }
 
+    /**
+     * Gets an array of the players in the match.
+     * @return An array of the players in the match.
+     */
+    public Player[] getPlayers() {
+        ArrayList<Player> players = new ArrayList<>();
+        for (PlayerAndStatistics playerAndStatistics : this.players) {
+            if (!players.contains(playerAndStatistics.player)) {
+                players.add(playerAndStatistics.player);
+            }
+        }
+        return players.toArray(new Player[players.size()]);
+    }
+
+    /**
+     * Get statistic(s) for a player in the match by the statistic spec.
+     * @param player A player in the match.
+     * @param spec A statisticSpec to get statistics for.
+     * @return An array of probably one or zero statistic objects. If the player or statistic cannot
+     * be found, an empty array will be returned. More than one object should not be returned because
+     * a player should only have one statistic per statisticSpec per match.
+     */
     public Statistic[] getPlayerStatisticsOfType(Player player, StatisticSpec spec) {
         for (PlayerAndStatistics playerAndStatistics : players) {
             if (playerAndStatistics.player.getId().equals(player.getId())) {
@@ -197,7 +219,7 @@ public class Match implements Comparable<Match> {
         /**
          * The statistics for the match for the player.
          */
-        private ArrayList<Statistic> statistics;
+        private ArrayList<Statistic> statistics = new ArrayList<>();
 
         /**
          * Adds a player and accompanying statistics to a match.
@@ -223,7 +245,7 @@ public class Match implements Comparable<Match> {
                     returnStatistics.add(statistic);
                 }
             }
-            return (Statistic[])returnStatistics.toArray();
+            return returnStatistics.toArray(new Statistic[returnStatistics.size()]);
         }
 
         /**

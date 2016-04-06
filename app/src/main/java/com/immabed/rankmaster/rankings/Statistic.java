@@ -1,7 +1,9 @@
 package com.immabed.rankmaster.rankings;
 
 /**
- * Created by Brady Coles on 2016-03-18.
+ * A base class for an individual statistic for a single match. Statistic objects are intended to be
+ * immutable to reduce risk of security leaks when statistic objects are passed around.
+ * @author Brady Coles
  */
 public abstract class Statistic {
     private String statisticSpecId;

@@ -31,13 +31,13 @@ public class DisplayMessageActivity extends AppCompatActivity {
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        ValueStatisticSpec spec = new ValueStatisticSpec("Points", true, true, false, 100, 0);
+        //ValueStatisticSpec spec = new ValueStatisticSpec("Points", true, true, false, 100, 0);
 
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
         TextView textView = new TextView(this);
         textView.setTextSize(40);
-        textView.setText(spec.getId());
+        //textView.setText(spec.getId());
 
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.content);
         layout.addView(textView);

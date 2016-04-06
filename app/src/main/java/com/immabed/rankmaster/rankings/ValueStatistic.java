@@ -9,17 +9,14 @@ public class ValueStatistic extends Statistic {
     private Double doubleValue = null;
     private ValueStatisticSpec spec;
 
-    public ValueStatistic(ValueStatisticSpec spec) {
-        super(spec);
-        this.spec = spec;
-    }
 
     public ValueStatistic(ValueStatisticSpec spec, double input) {
         super(spec);
         this.spec = spec;
+        setValue(input);
     }
 
-    public void setValue(double input) {
+    private void setValue(double input) {
         //TODO: throw value out of bounds exception
         if (spec.valueIsInteger()) {
             int integerInput = (int)input;
