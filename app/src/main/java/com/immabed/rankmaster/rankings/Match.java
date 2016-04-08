@@ -184,6 +184,21 @@ public class Match implements Comparable<Match> {
     }
 
     /**
+     * Checks if a player is in the match.
+     * @param player A player to check if is in the match.
+     * @return true if a player with the same id as the arument player can be found within the
+     * calling object.
+     */
+    public boolean hasPlayer(Player player) {
+        for (PlayerAndStatistics playerAndStatistics: players) {
+            if (player.getId().equals(playerAndStatistics.player.getId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Change the date that the match took place at.
      * @param year The year (eg. 2011)
      * @param month THe month between 0 (January) and 11 (December)

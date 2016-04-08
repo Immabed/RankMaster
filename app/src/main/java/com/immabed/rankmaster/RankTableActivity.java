@@ -29,12 +29,19 @@ public class RankTableActivity extends AppCompatActivity {
         TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
         row.setLayoutParams(lp);
         row.addView(tv);
+
+        tv = new TextView(this);
+        tv.setText("GP");
+        row.addView(tv);
+
         for (StatisticSpec spec : specs) {
             tv = new TextView(this);
             tv.setText(spec.toString());
             row.addView(tv);
         }
         rankTableView.addView(row);
+
+
         for (Player player : rankTable.getPlayers()) {
             row = new TableRow(this);
             lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
@@ -42,6 +49,11 @@ public class RankTableActivity extends AppCompatActivity {
             tv = new TextView(this);
             tv.setText(player.toString());
             row.addView(tv);
+
+            tv = new TextView(this);
+            tv.setText(Integer.toString(rankTable.getGamesPlayed(player)));
+            row.addView(tv);
+
             for (StatisticSpec spec : specs) {
                 tv = new TextView(this);
                 tv.setText(rankTable.getStatisticStringByPlayerBySpec(player, spec));
