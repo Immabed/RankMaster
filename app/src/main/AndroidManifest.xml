@@ -27,7 +27,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.immabed.rankmaster.MainActivity" />
         </activity>
-        <activity android:name=".RankTableActivity"></activity>
+        <activity android:name=".RankTableActivity" />
+        <activity android:name=".CreateRankingActivity"></activity>
     </application>
 
 </manifest>

@@ -1,6 +1,7 @@
 package com.immabed.rankmaster;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,7 +13,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CreateValueStatisticFragment.OnFragmentInteractionListener {
 
     public final static String EXTRA_MESSAGE = "com.immabed.rankmaster.MESSAGE";
 
@@ -31,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        sendMessage(fab);
     }
 
     @Override
@@ -56,10 +59,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendMessage(View view) {
-        Intent intent = new Intent(this, RankTableActivity.class);
-        EditText editText = (EditText) findViewById(R.id.edit_message);
-        String message = editText.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE, message);
+        Intent intent = new Intent(this, CreateRankingActivity.class);
+        //EditText editText = (EditText) findViewById(R.id.edit_message);
+       // String message = editText.getText().toString();
+        intent.putExtra(EXTRA_MESSAGE, "");
         startActivity(intent);
     }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
 }
