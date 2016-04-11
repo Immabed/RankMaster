@@ -1,5 +1,6 @@
 package com.immabed.rankmaster.rankings;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -7,7 +8,7 @@ import java.util.Date;
 /**
  * Created by Brady Coles on 2016-03-26.
  */
-public class Match implements Comparable<Match> {
+public class Match implements Comparable<Match>, Serializable {
 
     private ArrayList<PlayerAndStatistics> players;
     private Date date;
@@ -226,7 +227,7 @@ public class Match implements Comparable<Match> {
     /**
      *
      */
-    private class PlayerAndStatistics {
+    private static class PlayerAndStatistics implements Serializable {
         /**
          * The player to whom the statistics belong.
          */

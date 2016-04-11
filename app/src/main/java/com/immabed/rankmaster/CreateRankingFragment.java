@@ -1,20 +1,17 @@
 package com.immabed.rankmaster;
 
 import android.net.Uri;
-import android.support.v4.app.Fragment;
 
-import com.immabed.rankmaster.rankings.StatisticSpec;
+import com.immabed.rankmaster.rankings.compare.Ranking;
 
 /**
- * Created by immabed on 2016-04-07.
+ * Created by Immabed on 2016-04-09.
  */
-public abstract class CreateStatisticFragment extends Fragment {
-
-    public abstract StatisticSpec createStatisticSpec()
-        throws InsufficientFieldEntriesException;
+public abstract class CreateRankingFragment extends android.support.v4.app.Fragment {
+    public abstract Ranking getRanking()
+            throws InsufficientFieldEntriesException;
 
     public abstract void highlightInsufficientFields();
-
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -25,8 +22,8 @@ public abstract class CreateStatisticFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnStatisticFragmentInteractionListener {
+    public interface OnRankingFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onStatisticFragmentInteraction(Uri uri);
+        void onRankingFragmentInteraction(Uri uri);
     }
 }

@@ -1,52 +1,53 @@
 package com.immabed.rankmaster.rankings;
 
 import com.immabed.rankmaster.rankings.compare.Ranking;
+import com.immabed.rankmaster.rankings.compare.RankingDoesNotShareRankTableException;
 import com.immabed.rankmaster.rankings.compare.SumRanking;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 /**
  * Created by Brady Coles on 2016-04-02.
  */
-public class RankTable {
+public class RankTable implements Serializable{
     private String name;
-    private ArrayList<Match> matches;
+    private ArrayList<Match> matches = new ArrayList<>();
     private ArrayList<StatisticSpec> statisticSpecs;
     private ArrayList<Player> players;
     private Ranking mainRanking;
+    private String id;
 
 
-    public RankTable(String name/*, Ranking ranking, StatisticSpec ... statisticSpecs*/) {
+    public RankTable(String name, StatisticSpec ... statisticSpecs) {
         this.name = name;
-        //mainRanking = ranking;
-        //this.statisticSpecs = new ArrayList<>(Arrays.asList(statisticSpecs));
-        ValueStatisticSpec newSpec = new ValueStatisticSpec("Points", true, false, true, 0, 0, 0);
-        statisticSpecs = new ArrayList<>();
-        statisticSpecs.add(newSpec);
-        mainRanking = new SumRanking(newSpec, this, SumRanking.RankCriteria.MAXIMUM, 0, SumRanking.GamesPlayedComparison.AVERAGE_PER_GAME);
-        Player player1 = new Player("Brady");
-        Player player2 = new Player("Steve");
-        Player player3 = new Player("Gord");
-        Match match1 = new Match();
-        Match match2 = new Match();
-        Match match3 = new Match();
-        try {
-            match1.addPlayer(player1, new ValueStatistic(newSpec, 13));
-            match1.addPlayer(player2, new ValueStatistic(newSpec, 9));
-            match2.addPlayer(player3, new ValueStatistic(newSpec, 41));
-            match2.addPlayer(player1, new ValueStatistic(newSpec, 21));
-            match3.addPlayer(player2, new ValueStatistic(newSpec, 18));
-            match3.addPlayer(player1, new ValueStatistic(newSpec, 9));
+        this.statisticSpecs = new ArrayList<>(Arrays.asList(statisticSpecs));
+
+        // Seed ID
+        Random seed = new Random();
+        id = this.getClass().toString();
+        id = id.length() > 20 ? id.substring(id.length() - 20) : id;
+        id += Long.toString(seed.nextLong(), 36);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String toString() {
+        return name;
+    }
+
+    public void addRanking(Ranking ranking) throws RankingDoesNotShareRankTableException{
+        //TODO: check if ranktable is this
+        if (mainRanking == null) {
+            mainRanking = ranking;
         }
-        catch (PlayerAlreadyExistsException e) {
-            // Do nothing
+        else {
+            mainRanking.addFallbackRanking(ranking);
         }
-        matches = new ArrayList<Match>();
-        matches.add(match1);
-        matches.add(match2);
-        matches.add(match3);
-        sortPlayers();
     }
 
     /**

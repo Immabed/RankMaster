@@ -1,9 +1,11 @@
 package com.immabed.rankmaster.rankings;
 
+import java.io.Serializable;
+
 /**
  * Created by Brady Coles on 2016-03-18.
  */
-public class ValueStatistic extends Statistic {
+public class ValueStatistic extends Statistic implements Serializable{
 
     private Integer integerValue = null;
     private Double doubleValue = null;

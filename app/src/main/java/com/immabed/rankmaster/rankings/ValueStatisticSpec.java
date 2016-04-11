@@ -3,12 +3,13 @@ package com.immabed.rankmaster.rankings;
 
 import android.renderscript.Sampler;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Brady Coles on 2016-03-18.
  */
-public class ValueStatisticSpec extends StatisticSpec {
+public class ValueStatisticSpec extends StatisticSpec implements Serializable{
 
     private boolean isInteger;
     private boolean hasMaxBound;
@@ -77,6 +78,15 @@ public class ValueStatisticSpec extends StatisticSpec {
     public double getMinValue(){
         // TODO: Throw no min value exception
         return min;
+    }
+
+    /**
+     * Gets the displayed decimal places (irrelevant if value must be an integer).
+     * @return The number of displayed decimal places.
+     */
+    public int getDecimalPlaces() {
+        return decimalPlaces;
+
     }
 
     /**

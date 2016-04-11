@@ -5,10 +5,12 @@ import com.immabed.rankmaster.rankings.RankTable;
 import com.immabed.rankmaster.rankings.Statistic;
 import com.immabed.rankmaster.rankings.StatisticSpec;
 
+import java.io.Serializable;
+
 /**
  * Created by Brady Coles on 2016-04-02.
  */
-public abstract class Ranking {
+public abstract class Ranking implements Serializable {
 
     /**
      * The specification of the statistic to use to compare to players.

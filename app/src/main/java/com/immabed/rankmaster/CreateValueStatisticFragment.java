@@ -2,6 +2,7 @@ package com.immabed.rankmaster;
 
 import android.app.ActionBar;
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.renderscript.ScriptGroup;
@@ -23,21 +24,14 @@ import org.w3c.dom.Text;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link CreateValueStatisticFragment.OnFragmentInteractionListener} interface
+ * {@link com.immabed.rankmaster.CreateStatisticFragment.OnStatisticFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link CreateValueStatisticFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class CreateValueStatisticFragment extends CreateStatisticFragment
         implements CompoundButton.OnCheckedChangeListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    ;
 
     private CompoundButton isDecimalBtn;
     private TextView min;
@@ -46,7 +40,7 @@ public class CreateValueStatisticFragment extends CreateStatisticFragment
     private TextView decimalPlaces;
     private LinearLayout decimalLayout;
 
-    private OnFragmentInteractionListener mListener;
+    private OnStatisticFragmentInteractionListener mListener;
 
     public CreateValueStatisticFragment() {
         // Required empty public constructor
@@ -56,16 +50,12 @@ public class CreateValueStatisticFragment extends CreateStatisticFragment
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment CreateValueStatisticFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CreateValueStatisticFragment newInstance(String param1, String param2) {
+    public static CreateValueStatisticFragment newInstance() {
         CreateValueStatisticFragment fragment = new CreateValueStatisticFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -74,8 +64,6 @@ public class CreateValueStatisticFragment extends CreateStatisticFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -107,18 +95,12 @@ public class CreateValueStatisticFragment extends CreateStatisticFragment
     }
 
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnStatisticFragmentInteractionListener) {
+            mListener = (OnStatisticFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -135,22 +117,34 @@ public class CreateValueStatisticFragment extends CreateStatisticFragment
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (buttonView.getId() == isDecimalBtn.getId()) {
             if (isChecked) {
-                min.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
-                max.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
-                decimalLayout.setVisibility(View.INVISIBLE);
-                decimalLayout.getLayoutParams().height = 0;
-                decimalLayout.requestLayout();
-
+                makeWholeNumbers();
             }
             else {
-                min.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                max.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                decimalLayout.setVisibility(View.VISIBLE);
-                decimalLayout.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
-                decimalLayout.requestLayout();
-
+                makeDecimalNumbers();
             }
         }
+    }
+
+    private void makeWholeNumbers() {
+        min.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
+        if (!min.getText().toString().equals(""))
+            min.setText(Integer.toString((int)Double.parseDouble(min.getText().toString())));
+        max.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
+        if (!max.getText().toString().equals(""))
+            max.setText(Integer.toString((int)Double.parseDouble(max.getText().toString())));
+        decimalLayout.setVisibility(View.INVISIBLE);
+        decimalLayout.getLayoutParams().height = 0;
+        decimalLayout.requestLayout();
+    }
+
+    private void makeDecimalNumbers() {
+        min.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL
+                | InputType.TYPE_NUMBER_FLAG_SIGNED);
+        max.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL
+                | InputType.TYPE_NUMBER_FLAG_SIGNED);
+        decimalLayout.setVisibility(View.VISIBLE);
+        decimalLayout.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        decimalLayout.requestLayout();
     }
 
     @Override
@@ -174,10 +168,14 @@ public class CreateValueStatisticFragment extends CreateStatisticFragment
             min = Double.parseDouble(this.min.getText().toString());
         }
 
+        if (hasMax && hasMin && max < min) {
+            throw new InsufficientFieldEntriesException("Maximum cannot be less than minimum.");
+        }
+
         boolean isIntegerOnly = isDecimalBtn.isChecked();
         int decimalPlaces = 0;
 
-        if (isIntegerOnly) {
+        if (!isIntegerOnly) {
             decimalPlaces = Integer.parseInt(this.decimalPlaces.getText().toString());
             max = (int)max;
             min = (int)min;
@@ -188,18 +186,12 @@ public class CreateValueStatisticFragment extends CreateStatisticFragment
         return new ValueStatisticSpec(name, isIntegerOnly, hasMax, hasMin, max, min, decimalPlaces);
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    @Override
+    public void highlightInsufficientFields() {
+        if (name.getText().toString().equals("")) {
+            name.setHighlightColor(Color.RED);
+        }
     }
+
+
 }

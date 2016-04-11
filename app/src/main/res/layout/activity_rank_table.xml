@@ -9,10 +9,33 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.immabed.rankmaster.RankTableActivity">
 
-    <TableLayout
-        android:id="@+id/rank_table"
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/horizontalScrollView"
+        android:layout_above="@+id/create_match_button">
+
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/scrollView" >
+
+            <TableLayout
+                android:id="@+id/rank_table"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/cell_border">
+            </TableLayout>
+        </ScrollView>
+    </HorizontalScrollView>
+
+    <Button
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </TableLayout>
+        android:layout_height="wrap_content"
+        android:text="Create Another Match"
+        android:id="@+id/create_match_button"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="createMatch"/>
 
 </RelativeLayout>

@@ -1,12 +1,13 @@
 package com.immabed.rankmaster.rankings;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
 /**
  * Created by Brady Coles on 2016-03-18.
  */
-public abstract class StatisticSpec {
+public abstract class StatisticSpec implements Serializable{
     private String id;
     private String name;
 

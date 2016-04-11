@@ -4,6 +4,8 @@ import com.immabed.rankmaster.rankings.Player;
 import com.immabed.rankmaster.rankings.RankTable;
 import com.immabed.rankmaster.rankings.StatisticSpec;
 
+import java.io.Serializable;
+
 /**
  * Created by Brady Coles on 2016-04-02.
  */
