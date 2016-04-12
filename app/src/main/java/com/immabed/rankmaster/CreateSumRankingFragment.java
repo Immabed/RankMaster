@@ -20,30 +20,53 @@ import com.immabed.rankmaster.rankings.compare.Ranking;
 import com.immabed.rankmaster.rankings.compare.SumRanking;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Fragment to create a SumRanking object.
  * Activities that contain this fragment must implement the
  * {@link CreateSumRankingFragment.OnRankingFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link CreateSumRankingFragment#newInstance} factory method to
  * create an instance of this fragment.
+ *
+ * Modified from template.
+ * @author Brady Coles
  */
 public class CreateSumRankingFragment extends CreateRankingFragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    /**
+     * Identifier used by onCreate/newInstance as key for rankTable object
+     */
     private static final String RANK_TABLE_KEY = "com.immabed.rankmaster.CreateSumRankingFragment.rank_table_key";
 ;
 
     private OnRankingFragmentInteractionListener mListener;
 
+    /**
+     * The spinner view that holds the type selection for the SumRanking object
+     */
     private Spinner typeSpinner;
+    /**
+     * The spinner view that holds the possible StatisticSpec objects that can be used
+     */
     private Spinner statisticSpinner;
+    /**
+     * The check box view that determines whether the ranks are determined per game or total
+     */
     private CompoundButton perGameCheckBox;
+    /**
+     * The text field that contains the proximity value (if type is proximity)
+     */
     private TextView proximityField;
+    /**
+     * The layout to hide/show if type is proximity
+     */
     private LinearLayout proximityLayout;
 
+    /**
+     * The rankTable that is being used.
+     */
     private RankTable rankTable;
 
     public CreateSumRankingFragment() {
+        //Necessary Empty Constructor
     }
 
     /**
@@ -66,6 +89,7 @@ public class CreateSumRankingFragment extends CreateRankingFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            // Populate member.
             rankTable = (RankTable) getArguments().getSerializable(RANK_TABLE_KEY);
         }
     }
@@ -76,12 +100,14 @@ public class CreateSumRankingFragment extends CreateRankingFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_create_sum_ranking, container, false);
 
+        //Populate members.
         typeSpinner = (Spinner) view.findViewById(R.id.ranking_type);
         statisticSpinner = (Spinner) view.findViewById(R.id.statistic_selector);
         proximityLayout = (LinearLayout) view.findViewById(R.id.proximity_layout);
         proximityField = (TextView) view.findViewById(R.id.proximity_field);
         perGameCheckBox = (CompoundButton) view.findViewById(R.id.per_game_checkbox);
 
+        // Default set per game.
         perGameCheckBox.setChecked(true);
 
         Context context = getActivity();
@@ -99,6 +125,7 @@ public class CreateSumRankingFragment extends CreateRankingFragment {
         statisticSpinner.setAdapter(adapterSpecs);
 
 
+        // Set selection listener to show/hide proximityLayout
         typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -122,12 +149,6 @@ public class CreateSumRankingFragment extends CreateRankingFragment {
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onRankingFragmentInteraction(uri);
-        }
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -146,6 +167,11 @@ public class CreateSumRankingFragment extends CreateRankingFragment {
         mListener = null;
     }
 
+    /**
+     * Returns the SumRanking object created, as a Ranking object, if possible, else throw exception.
+     * @return The SumRanking object that has been created.
+     * @throws InsufficientFieldEntriesException If fields are not entered sufficiently, throws exception.
+     */
     @Override
     public Ranking getRanking() throws InsufficientFieldEntriesException {
         if ((typeSpinner.getSelectedItem()).equals(getString(R.string.sum_proximity)) && proximityField.getText().toString().equals("")) {

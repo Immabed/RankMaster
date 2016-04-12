@@ -1,7 +1,9 @@
 package com.immabed.rankmaster.rankings;
 
 /**
- * Created by Brady Coles on 2016-04-02.
+ * Exception that describes a situation where a Statistic or StatisticSpec is expected to be new, but
+ * is found to already exist.
+ * @author Brady Coles
  */
 public class StatisticAlreadyExistsException extends Exception {
     public StatisticAlreadyExistsException() {

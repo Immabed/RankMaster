@@ -10,17 +10,42 @@ import java.util.Arrays;
 import java.util.Random;
 
 /**
- * Created by Brady Coles on 2016-04-02.
+ * A RankTable with the ability to hold Matches and sort Players based on a Ranking rule.
+ * @author Brady Coles
  */
 public class RankTable implements Serializable{
+    /**
+     * Display name of this RankTable
+     */
     private String name;
+    /**
+     * List of matches belonging to this RankTable
+     */
     private ArrayList<Match> matches = new ArrayList<>();
+    /**
+     * List of StatisticSpec objects used by this RankTable
+     */
     private ArrayList<StatisticSpec> statisticSpecs;
+    /**
+     * List of players, does not necessarily reflect current players unless populatePlayersArray or
+     * sortPlayers is called.
+     */
     private ArrayList<Player> players;
+    /**
+     * Ranking system to use to compare players.
+     */
     private Ranking mainRanking;
+    /**
+     * Unique identifier
+     */
     private String id;
 
 
+    /**
+     * Create a new RankTable with a name and StatisticSpec's
+     * @param name The display name of the RankTable.
+     * @param statisticSpecs The StatisticSpec's to use in the RankTable.
+     */
     public RankTable(String name, StatisticSpec ... statisticSpecs) {
         this.name = name;
         this.statisticSpecs = new ArrayList<>(Arrays.asList(statisticSpecs));
@@ -32,18 +57,34 @@ public class RankTable implements Serializable{
         id += Long.toString(seed.nextLong(), 36);
     }
 
+    /**
+     * Returns the 'unique' id of this RankTable.
+     * @return the 'unique' id of this RankTable.
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * Return the name of the RankTable.
+     * @return The name of the RankTable.
+     */
     public String toString() {
         return name;
     }
 
-    public void addRanking(Ranking ranking) throws RankingDoesNotShareRankTableException{
+    /**
+     * Adds a Ranking object as a rule. If a mainRanking already exists, becomes a fallback ranking.
+     * @param ranking A ranking object whose RankTable is the calling object.
+     */
+    public void addRanking(Ranking ranking) throws RankingDoesNotShareRankTableException {
         //TODO: check if ranktable is this
         if (mainRanking == null) {
-            mainRanking = ranking;
+            if (mainRanking.getRankTableId().equals(id))
+                mainRanking = ranking;
+            else
+                throw new RankingDoesNotShareRankTableException(
+                        "Tried to add main ranking without proper RankTable.");
         }
         else {
             mainRanking.addFallbackRanking(ranking);

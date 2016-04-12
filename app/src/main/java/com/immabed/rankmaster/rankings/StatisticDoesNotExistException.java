@@ -1,7 +1,9 @@
 package com.immabed.rankmaster.rankings;
 
 /**
- * Created by immabed on 2016-04-02.
+ * Exception that describes a situation where a Statistic or StatisticSpec object is expected but
+ * not found.
+ * @author Brady Coles
  */
 public class StatisticDoesNotExistException extends Exception {
     public StatisticDoesNotExistException() {

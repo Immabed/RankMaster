@@ -19,10 +19,19 @@ import java.io.Serializable;
 import java.util.Map;
 
 /**
- * Created by Immabed on 2016-04-10.
+ * Used for saving and reloading RankTable objects.
+ * Uses RankTable id's as keys for storing serialized RankTables to SharedPreferences.
+ *
+ * objectToString and stringToObject methods provided by Elisha Sterngold on stackoverflow.com
+ *
+ * @author Brady Coles, Elisha Sterngold
  */
 public abstract class RankTableIO {
 
+    /**
+     * Deletes all tables from storage.
+     * @param context A context for RankTable, usually the current activity (this or getContext)
+     */
     public static void clearTables(Context context) {
         SharedPreferences mPrefs=context.getSharedPreferences(context.getApplicationInfo().name, Context.MODE_PRIVATE);
         SharedPreferences.Editor ed=mPrefs.edit();
@@ -30,6 +39,13 @@ public abstract class RankTableIO {
         ed.commit();
     }
 
+    /**
+     * Deletes a particular RankTable from storage. If a copy of the RankTable is not in storage,
+     * nothing happens.
+     * @param context A context for RankTable, usually the current activity (this or getContext)
+     * @param rankTable The RankTable to remove. Uses the id, so rankTable doesn't have to be the
+     *                  same version as the one in storage.
+     */
     public static void removeTable(Context context, RankTable rankTable) {
         SharedPreferences mPrefs=context.getSharedPreferences(context.getApplicationInfo().name, Context.MODE_PRIVATE);
         SharedPreferences.Editor ed=mPrefs.edit();
@@ -37,6 +53,11 @@ public abstract class RankTableIO {
         ed.commit();
     }
 
+    /**
+     * Adds or replaces a RankTable to storage with new version.
+     * @param context A context for RankTable, usually the current activity (this or getContext)
+     * @param rankTable The RankTable to save. Can be new RankTable or a RankTable previously saved.
+     */
     public static void saveTable(Context context, RankTable rankTable) {
         SharedPreferences mPrefs=context.getSharedPreferences(context.getApplicationInfo().name, Context.MODE_PRIVATE);
         SharedPreferences.Editor ed=mPrefs.edit();
@@ -44,6 +65,11 @@ public abstract class RankTableIO {
         ed.commit();
     }
 
+    /**
+     * Returns an array of all RankTables currently in storage.
+     * @param context A context for RankTable, usually the current activity (this or getContext)
+     * @return An array of RankTable objects retrieved from storage.
+     */
     public static RankTable[] getTables(Context context) {
         SharedPreferences mPrefs=context.getSharedPreferences(context.getApplicationInfo().name, Context.MODE_PRIVATE);
         Map<String, ?> allEntries = mPrefs.getAll();
@@ -56,6 +82,9 @@ public abstract class RankTableIO {
         return rankTables;
     }
 
+    /**
+     * Created by Elisha Sterngold on stackoverflow.com
+     */
     static public String objectToString(Serializable object) {
         String encoded = null;
         try {
@@ -70,6 +99,9 @@ public abstract class RankTableIO {
         return encoded;
     }
 
+    /**
+     * Created by Elisha Sterngold on stackoverflow.com
+     */
     @SuppressWarnings("unchecked")
     static public Serializable stringToObject(String string){
         byte[] bytes = Base64.decode(string, 0);

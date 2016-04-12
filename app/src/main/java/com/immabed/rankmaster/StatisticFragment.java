@@ -13,16 +13,34 @@ import com.immabed.rankmaster.rankings.ValueStatisticSpec;
  */
 public abstract class StatisticFragment extends Fragment {
 
+    /**
+     * Identifier for passing/accessing the RankTable argument in the OnCreate/newInstance Bundle
+     */
     public static final String ARG_SPEC = "com.immabed.rankmaster.StatisticFragment.spec_arg";
 
 
+    /**
+     * Returns the Statistic object that the fragment is creating.
+     * @return A statistic object created from the user entered data.
+     * @throws InsufficientFieldEntriesException If fields are empty or incorrect that need to be
+     * changed before a Statistic object can be created, exception is thrown.
+     */
     public abstract Statistic getStatistic() throws InsufficientFieldEntriesException;
 
 
+    /**
+     * Used to create a StatisticFragment child depending on the class of the spec argument.
+     * @param spec The StatisticSpec object that defines the Statistic to be created.
+     * @return A fragment that is a child of StatisticFragment based on the Class of spec.
+     * @throws UnknownParameterObjectException If spec is not recognized, exception thrown.
+     */
     public static StatisticFragment newInstance(StatisticSpec spec)
             throws UnknownParameterObjectException {
         StatisticFragment fragment;
+        // Check what type of Statistic needs to be created. Needs to be updated when new Statistic
+        // types are added.
         if (spec instanceof ValueStatisticSpec) {
+            // Statistic will be a ValueStatistic
             fragment = new ValueStatisticFragment();
         }
         else {

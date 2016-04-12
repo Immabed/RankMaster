@@ -1,7 +1,9 @@
 package com.immabed.rankmaster.rankings;
 
 /**
- * Created by Brady Coles on 2016-04-02.
+ * Exception that describes a situation where a Player was expected to be new, but was found to
+ * already exist in whatever situation the exception is created.
+ * @author Brady Coles
  */
 public class PlayerAlreadyExistsException extends Exception {
     public PlayerAlreadyExistsException() {

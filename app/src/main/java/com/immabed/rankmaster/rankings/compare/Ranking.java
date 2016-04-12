@@ -2,13 +2,15 @@ package com.immabed.rankmaster.rankings.compare;
 
 import com.immabed.rankmaster.rankings.Player;
 import com.immabed.rankmaster.rankings.RankTable;
-import com.immabed.rankmaster.rankings.Statistic;
 import com.immabed.rankmaster.rankings.StatisticSpec;
 
 import java.io.Serializable;
 
 /**
- * Created by Brady Coles on 2016-04-02.
+ * Abstract parent class of all Ranking rules that are used to compare two players in a RankTable.
+ * Players are compared based on their statistics of a particular StatisticSpec and the rules of the
+ * particular Ranking class being used.
+ * @author Brady Coles
  */
 public abstract class Ranking implements Serializable {
 
@@ -43,6 +45,14 @@ public abstract class Ranking implements Serializable {
      */
     protected RankTable getRankTable() {
         return rankTable;
+    }
+
+    /**
+     * Returns the id of the associated RankTable.
+     * @return the id of the associated RankTable.
+     */
+    public String getRankTableId() {
+        return rankTable.getId();
     }
 
     /**

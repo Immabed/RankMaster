@@ -5,13 +5,24 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Created by Brady Coles on 2016-03-18.
+ * Abstract parent of all StatisticSpec's. These define the properties of statistics.
+ * @author Brady Coles
  */
 public abstract class StatisticSpec implements Serializable{
+    /**
+     * Unique id used to connect Statistic objects to this StatisticSpec.
+     */
     private String id;
+    /**
+     * Display name.
+     */
     private String name;
 
-    StatisticSpec(String name) {
+    /**
+     * Creates a StatisticSpec, sets name and id.
+     * @param name
+     */
+    public StatisticSpec(String name) {
         Random seed = new Random();
         id = this.getClass().toString();
         id = id.length() > 20 ? id.substring(id.length() - 20) : id;
@@ -39,7 +50,17 @@ public abstract class StatisticSpec implements Serializable{
         return name;
     }
 
+    /**
+     * Returns the value of a combined group of statistics as a displayable string.
+     * @param statistics Array of statistics with same id as calling object.
+     * @return Displayable string of combined value.
+     */
     public abstract String getStatisticString(Statistic[] statistics);
 
+    /**
+     * Returns the value of a group of statistics as a comparable double.
+     * @param statistics Array of statistics with same id as calling object.
+     * @return Comparable double of combined statistics.
+     */
     public abstract double getValue(Statistic[] statistics);
 }

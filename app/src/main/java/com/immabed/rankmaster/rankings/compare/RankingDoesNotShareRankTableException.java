@@ -1,7 +1,9 @@
 package com.immabed.rankmaster.rankings.compare;
 
 /**
- * Created by Immabed on 2016-04-05.
+ * Exception describes a situation where a Ranking object has a different RankTable member than
+ * expected.
+ * @author Brady Coles
  */
 public class RankingDoesNotShareRankTableException extends Exception {
     public RankingDoesNotShareRankTableException() {

@@ -19,15 +19,36 @@ import com.immabed.rankmaster.rankings.compare.RankingDoesNotShareRankTableExcep
 
 import java.util.ArrayList;
 
+/**
+ * Activity to create a RankTable.
+ *
+ * Modified from template.
+ * @author Brady Coles
+ */
 public class CreateRankingActivity extends FragmentActivity
         implements CreateStatisticFragment.OnStatisticFragmentInteractionListener,
             CreateRankingFragment.OnRankingFragmentInteractionListener {
 
+    /**
+     * List of CreateStatisticFragments used to create StatisticSpec objects
+     */
     private ArrayList<CreateStatisticFragment> statisticFragments;
+    /**
+     * List of CreateRankingFragments used to create Ranking objects
+     */
     private ArrayList<CreateRankingFragment> rankingFragments;
-    RankTable rankTable;
+    /**
+     * RankTable object that is created.
+     */
+    private RankTable rankTable;
 
+    /**
+     * View containing CreateValueStatisticFragments (and associated views)
+     */
     private ScrollView statisticView;
+    /**
+     * View containing CreateRankingFragments (and associated views)
+     */
     private ScrollView rankingView;
 
 
@@ -36,17 +57,24 @@ public class CreateRankingActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_ranking);
 
+        // Initialize ArrayLists
         statisticFragments = new ArrayList<>();
         rankingFragments = new ArrayList<>();
 
+        //Populate members
         statisticView = (ScrollView) findViewById(R.id.statistic_scroll_view);
         rankingView = (ScrollView) findViewById(R.id.ranking_scroll_view);
 
+        // Set rankingView invisible because it is not needed yet.
         rankingView.setVisibility(View.INVISIBLE);
         findViewById(R.id.create_rank_table).setVisibility(View.INVISIBLE);
     }
 
 
+    /**
+     * Add a new CreateValueStatisticFragment.
+     * @param view Calling view.
+     */
     public void addValueStatistic(View view) {
         CreateStatisticFragment fragment = CreateValueStatisticFragment.newInstance();
         getSupportFragmentManager().beginTransaction()
@@ -54,6 +82,10 @@ public class CreateRankingActivity extends FragmentActivity
         statisticFragments.add(fragment);
     }
 
+    /**
+     * Add a new CreateRankingFragment.
+     * @param view Calling view.
+     */
     public void addRanking(View view) {
         CreateRankingFragment fragment = CreateSumRankingFragment.newInstance(rankTable);
         getSupportFragmentManager().beginTransaction()
@@ -63,14 +95,16 @@ public class CreateRankingActivity extends FragmentActivity
 
 
     public void createRanking(View view) {
-        ArrayList<Ranking> rankings = new ArrayList<>();
         if (rankingFragments.size() == 0) {
+            // Requires at least one ranking rule
             Context context = getApplicationContext();
             Toast.makeText(context, "At least one ranking rule is required.", Toast.LENGTH_SHORT).show();
         }
+
         for (CreateRankingFragment fragment: rankingFragments) {
+            // create and add ranking objects
             try {
-                rankings.add(fragment.getRanking());
+                rankTable.addRanking(fragment.getRanking());
             }
             catch (InsufficientFieldEntriesException e) {
                 Context context = getApplicationContext();
@@ -80,14 +114,10 @@ public class CreateRankingActivity extends FragmentActivity
                     f.highlightInsufficientFields();
                 return;
             }
-        }
-
-        for (Ranking ranking : rankings) {
-            try {
-                rankTable.addRanking(ranking);
-            } catch (RankingDoesNotShareRankTableException e) {
+            catch (RankingDoesNotShareRankTableException e) {
                 System.out.println(e.getMessage());
             }
+
         }
 
         RankTableIO.saveTable(this, rankTable);
@@ -97,9 +127,21 @@ public class CreateRankingActivity extends FragmentActivity
         startActivity(intent);
     }
 
+    /**
+     * Create a RankTable using the name and CreateStatisticFragments, and move to displaying the
+     * rankingView.
+     * @param view Calling view.
+     */
     public void addRankingRules(View view) {
+        if (statisticFragments.size() == 0) {
+            // Requires at least one statistic.
+            Context context = getApplicationContext();
+            Toast.makeText(context, "At least one statistic definition is required.", Toast.LENGTH_SHORT).show();
+        }
+
         ArrayList<StatisticSpec> statisticSpecs = new ArrayList<>();
         for (CreateStatisticFragment fragment : statisticFragments) {
+            // create StatisticSpec objects
             try {
                 statisticSpecs.add(fragment.createStatisticSpec());
             }
@@ -119,8 +161,10 @@ public class CreateRankingActivity extends FragmentActivity
             return;
         }
 
+        // Create RankTable
         rankTable = new RankTable(rankName.getText().toString(), statisticSpecs.toArray(new StatisticSpec[statisticSpecs.size()]));
 
+        // Set visibility to allow users to enter Ranking Rules
         statisticView.setVisibility(View.INVISIBLE);
         rankingView.setVisibility(View.VISIBLE);
         findViewById(R.id.add_ranking_rules).setVisibility(View.INVISIBLE);

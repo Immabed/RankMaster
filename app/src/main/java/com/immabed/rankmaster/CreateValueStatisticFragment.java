@@ -31,13 +31,30 @@ import org.w3c.dom.Text;
  */
 public class CreateValueStatisticFragment extends CreateStatisticFragment
         implements CompoundButton.OnCheckedChangeListener {
-    ;
 
+    /**
+     * check box view that determines whether values must be integers or not.
+     */
     private CompoundButton isDecimalBtn;
+    /**
+     * Text field that holds minimum value
+     */
     private TextView min;
+    /**
+     * Text field that holds maximum value
+     */
     private TextView max;
+    /**
+     * Text field that holds name of statistic
+     */
     private TextView name;
+    /**
+     * Text field that holds the number of decimal places (if not limited to integers)
+     */
     private TextView decimalPlaces;
+    /**
+     * Layout to show/hide if input can/cannot be fractional.
+     */
     private LinearLayout decimalLayout;
 
     private OnStatisticFragmentInteractionListener mListener;
@@ -63,8 +80,6 @@ public class CreateValueStatisticFragment extends CreateStatisticFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
     }
 
     @Override
@@ -73,21 +88,22 @@ public class CreateValueStatisticFragment extends CreateStatisticFragment
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_create_value_statistic, container, false);
 
+        // Populate members
         name = (TextView) view.findViewById(R.id.nameText);
-
         isDecimalBtn = (CompoundButton) view.findViewById(R.id.decimalCheckBox);
         min = (TextView) view.findViewById(R.id.minValue);
         max = (TextView) view.findViewById(R.id.maxValue);
         decimalPlaces = (TextView) view.findViewById(R.id.decimalValue);
         decimalLayout = (LinearLayout) view.findViewById(R.id.decimalLayout);
 
+        // Set defaults
         isDecimalBtn.setOnCheckedChangeListener(this);
         isDecimalBtn.setChecked(true);
         min.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
         max.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
         decimalLayout.setVisibility(View.INVISIBLE);
         decimalLayout.getLayoutParams().height = 0;
-        decimalLayout.requestLayout();
+        decimalLayout.requestLayout(); //update layout
         decimalPlaces.setInputType(InputType.TYPE_CLASS_NUMBER);
 
 
@@ -113,6 +129,11 @@ public class CreateValueStatisticFragment extends CreateStatisticFragment
         mListener = null;
     }
 
+    /**
+     * When isDecimalButton is checked, update view accordingly.
+     * @param buttonView Calling CoumpoundView
+     * @param isChecked State of check box
+     */
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (buttonView.getId() == isDecimalBtn.getId()) {
@@ -125,6 +146,9 @@ public class CreateValueStatisticFragment extends CreateStatisticFragment
         }
     }
 
+    /**
+     * Sets the fragment to whole number mode. Makes fields integer only and hides decimalLayout.
+     */
     private void makeWholeNumbers() {
         min.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
         if (!min.getText().toString().equals(""))
@@ -137,6 +161,9 @@ public class CreateValueStatisticFragment extends CreateStatisticFragment
         decimalLayout.requestLayout();
     }
 
+    /**
+     * Sets the fragment to fractional number mode. Makes fields allow integers and shows decimalLayout.
+     */
     private void makeDecimalNumbers() {
         min.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL
                 | InputType.TYPE_NUMBER_FLAG_SIGNED);
@@ -147,6 +174,13 @@ public class CreateValueStatisticFragment extends CreateStatisticFragment
         decimalLayout.requestLayout();
     }
 
+    /**
+     * Creates ValueStatisticSpec if possible from user entered data or throws exception if any
+     * fields are insufficient or invalid.
+     * @return ValueStatisticSpec as StatisticSpec created by this fragment.
+     * @throws InsufficientFieldEntriesException If any fields are insufficient or invalid, throws
+     * exception.
+     */
     @Override
     public StatisticSpec createStatisticSpec() throws InsufficientFieldEntriesException {
         if (name.getText().toString().equals("")) {
@@ -169,6 +203,7 @@ public class CreateValueStatisticFragment extends CreateStatisticFragment
         }
 
         if (hasMax && hasMin && max < min) {
+            // Check to make sure max is greater than or equal to min
             throw new InsufficientFieldEntriesException("Maximum cannot be less than minimum.");
         }
 
@@ -176,6 +211,7 @@ public class CreateValueStatisticFragment extends CreateStatisticFragment
         int decimalPlaces = 0;
 
         if (!isIntegerOnly) {
+            // Ensure max and min are whole numbers
             decimalPlaces = Integer.parseInt(this.decimalPlaces.getText().toString());
             max = (int)max;
             min = (int)min;
@@ -186,11 +222,12 @@ public class CreateValueStatisticFragment extends CreateStatisticFragment
         return new ValueStatisticSpec(name, isIntegerOnly, hasMax, hasMin, max, min, decimalPlaces);
     }
 
+    /**
+     * Highlight insufficient fields.
+     */
     @Override
     public void highlightInsufficientFields() {
-        if (name.getText().toString().equals("")) {
-            name.setHighlightColor(Color.RED);
-        }
+        //TODO
     }
 
 

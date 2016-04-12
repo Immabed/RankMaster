@@ -1,7 +1,9 @@
 package com.immabed.rankmaster.rankings;
 
 /**
- * Created by Brady Coles on 2016-04-02.
+ * Exception that describes a situation where a Player object was expected to be found, but was not
+ * found.
+ * @author Brady Coles
  */
 public class PlayerNotFoundException extends Exception {
     public PlayerNotFoundException() {

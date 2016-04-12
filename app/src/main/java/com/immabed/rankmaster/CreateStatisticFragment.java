@@ -6,13 +6,24 @@ import android.support.v4.app.Fragment;
 import com.immabed.rankmaster.rankings.StatisticSpec;
 
 /**
- * Created by immabed on 2016-04-07.
+ * Abstract parent of fragments that create StatisticSpec objects.
+ * @author Brady Coles
  */
 public abstract class CreateStatisticFragment extends Fragment {
 
+    /**
+     * Returns the StatisticSpec object that has been created, or throws an exception describing
+     * invalid or insufficient user entries.
+     * @return The StatisticSpec object this fragment creates.
+     * @throws InsufficientFieldEntriesException If the user has entered insufficient or invalid
+     * data such that the Ranking object cannot be creates, exception is thrown.
+     */
     public abstract StatisticSpec createStatisticSpec()
         throws InsufficientFieldEntriesException;
 
+    /**
+     * Highlights fields that are not entered properly to alert user.
+     */
     public abstract void highlightInsufficientFields();
 
     /**

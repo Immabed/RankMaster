@@ -1,15 +1,11 @@
 package com.immabed.rankmaster.rankings;
 
 
-import android.renderscript.Sampler;
-
-import java.io.Serializable;
-import java.util.ArrayList;
 
 /**
  * Created by Brady Coles on 2016-03-18.
  */
-public class ValueStatisticSpec extends StatisticSpec implements Serializable{
+public class ValueStatisticSpec extends StatisticSpec{
 
     private boolean isInteger;
     private boolean hasMaxBound;
@@ -81,12 +77,14 @@ public class ValueStatisticSpec extends StatisticSpec implements Serializable{
     }
 
     /**
-     * Gets the displayed decimal places (irrelevant if value must be an integer).
+     * Gets the displayed decimal places (0 if value must be an integer).
      * @return The number of displayed decimal places.
      */
     public int getDecimalPlaces() {
-        return decimalPlaces;
-
+        if (isInteger)
+            return 0;
+        else
+            return decimalPlaces;
     }
 
     /**
@@ -100,6 +98,13 @@ public class ValueStatisticSpec extends StatisticSpec implements Serializable{
         return String.format("%."+decimalPlaces+"f",getValue(statistics));
     }
 
+    /**
+     * Get the numeric value of a number of Statistics summed together.
+     * @param statistics An array of statistics, these statistics should be of type ValueStatistic
+     *                   and have the same id as this ValueStatisticSpec.
+     * @return the combined value of the inputted statistics, if those
+     * statistics are of the right type (ValueStatistic), and have the same id as this Spec.
+     */
     public double getValue(Statistic[] statistics) {
         double sum = 0;
         for (Statistic statistic : statistics) {

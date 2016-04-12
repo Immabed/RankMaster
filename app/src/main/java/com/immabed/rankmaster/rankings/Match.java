@@ -6,13 +6,25 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Created by Brady Coles on 2016-03-26.
+ * A Match object is used by a RankTable. Describes the players and associates statistics involved
+ * in a particular match or game, specifically a particular instance of whatever is being 'Ranked' in
+ * the RankTable.
+ * @author Brady Coles
  */
 public class Match implements Comparable<Match>, Serializable {
 
+    /**
+     * List of players and associated statistics.
+     */
     private ArrayList<PlayerAndStatistics> players;
+    /**
+     * Date when match happened, used to compare matches.
+     */
     private Date date;
 
+    /**
+     * Create a new match. Date is set as the time the match object is created.
+     */
     public Match() {
         date = new Date();
         players = new ArrayList<>();
@@ -225,7 +237,7 @@ public class Match implements Comparable<Match>, Serializable {
 
 
     /**
-     *
+     * A data class that holds a Player and all Statistics associated with it for the current match.
      */
     private static class PlayerAndStatistics implements Serializable {
         /**
@@ -254,6 +266,11 @@ public class Match implements Comparable<Match>, Serializable {
             }
         }
 
+        /**
+         * Returns any statistics with the specified id that belong to the player.
+         * @param statisticId An id of a Statistic/StatisticSpec
+         * @return An array (probable length 0 or 1) of Statistic objects with the id of statisticId
+         */
         private Statistic[] getStatistics(String statisticId) {
             ArrayList<Statistic> returnStatistics = new ArrayList<>();
             for (Statistic statistic : statistics) {

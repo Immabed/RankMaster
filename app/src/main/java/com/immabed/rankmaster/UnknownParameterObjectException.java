@@ -1,7 +1,8 @@
 package com.immabed.rankmaster;
 
 /**
- * Created by Immabed on 2016-04-10.
+ * Describes an exception where a parameter is passed that is not understood by the method.
+ * @author Brady Coles
  */
 public class UnknownParameterObjectException extends Exception{
     UnknownParameterObjectException(String message) {

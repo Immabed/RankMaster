@@ -1,53 +1,53 @@
 package com.immabed.rankmaster.rankings;
 
-import java.io.Serializable;
 
 /**
- * Created by Brady Coles on 2016-03-18.
+ * A Statistic that holds a numeric value. Good for things like goals, assists, saves, points, etc.
+ * @author Brady Coles
  */
-public class ValueStatistic extends Statistic implements Serializable{
-
-    private Integer integerValue = null;
-    private Double doubleValue = null;
+public class ValueStatistic extends Statistic{
+    /**
+     * Value of statistic.
+     */
+    private Double value = null;
+    /**
+     * ValueStatisticSpec that defines the statistic value.
+     */
     private ValueStatisticSpec spec;
 
-
+    /**
+     * Create a ValueStatistic object.
+     * @param spec The ValueStatisticSpec that defines the nature of this ValueStatistic;
+     * @param input The value to set this statistic to.
+     */
     public ValueStatistic(ValueStatisticSpec spec, double input) {
         super(spec);
         this.spec = spec;
         setValue(input);
     }
 
+    /**
+     * Set the value based on the parameters of the spec. If beyond limits, is set to limit.
+     * @param input Value is set to this number or limit, if this is beyond a limit.
+     */
     private void setValue(double input) {
-        //TODO: throw value out of bounds exception
         if (spec.valueIsInteger()) {
-            int integerInput = (int)input;
-            if (spec.valueHasMaxBound() && integerInput > spec.getMaxValue() ||
-                    spec.valueHasMinBound() && integerInput < spec.getMinValue()) {
-                //Throw exception
-            }
-            else {
-                integerValue = integerInput;
-            }
+            input = (int) input;
         }
-        else {
-            if (spec.valueHasMaxBound() && input > spec.getMaxValue() ||
-                    spec.valueHasMinBound() && input < spec.getMinValue()) {
-                //Throw exception
-            }
-            else {
-                doubleValue = input;
-            }
-        }
+        if (spec.valueHasMaxBound() && input > spec.getMaxValue() )
+            value = spec.getMaxValue();
+        else if (spec.valueHasMinBound() && input < spec.getMinValue())
+            value = spec.getMinValue();
+        else
+            value = input;
     }
 
+    /**
+     * Get the value of this statistic
+     * @return The value of this statistic.
+     */
     public double getValue() {
-        if (spec.valueIsInteger()) {
-            return integerValue;
-        }
-        else {
-            return doubleValue;
-        }
+        return value;
     }
 
 }

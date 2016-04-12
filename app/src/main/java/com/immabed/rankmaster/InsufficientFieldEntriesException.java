@@ -1,11 +1,12 @@
 package com.immabed.rankmaster;
 
 /**
- * Created by immabed on 2016-04-07.
+ * Exception detailing UI fields that are not entered properly.
+ * @author Brady Coles
  */
 public class InsufficientFieldEntriesException extends Exception {
     public InsufficientFieldEntriesException() {
-        super("Insuffiecient fields entered.");
+        super("Insufficient fields entered.");
     }
     public InsufficientFieldEntriesException(String message) {
         super(message);
