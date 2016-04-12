@@ -179,15 +179,17 @@ public class CreateSumRankingFragment extends CreateRankingFragment {
         }
 
         StatisticSpec spec = (StatisticSpec)statisticSpinner.getSelectedItem();
-
+        double proximityValue = 0;
         SumRanking.RankCriteria criteria;
         String typeString = (String)typeSpinner.getSelectedItem();
         if (typeString.equals(getResources().getString(R.string.sum_highest)))
             criteria = SumRanking.RankCriteria.MAXIMUM;
         else if (typeString.equals(getResources().getString(R.string.sum_lowest)))
             criteria = SumRanking.RankCriteria.MINIMUM;
-        else if (typeString.equals(getResources().getString(R.string.sum_proximity)))
+        else if (typeString.equals(getResources().getString(R.string.sum_proximity))) {
             criteria = SumRanking.RankCriteria.PROXIMITY;
+            proximityValue = Double.parseDouble(proximityField.getText().toString());
+        }
         else
             throw new InsufficientFieldEntriesException("Type " + typeString + " is unknown.");
 
@@ -197,7 +199,7 @@ public class CreateSumRankingFragment extends CreateRankingFragment {
         else
             comparison = SumRanking.GamesPlayedComparison.OVERALL_TOTAL;
 
-        return new SumRanking(spec, rankTable, criteria, 0, comparison);
+        return new SumRanking(spec, rankTable, criteria, proximityValue, comparison);
     }
 
     @Override

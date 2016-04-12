@@ -1,18 +1,12 @@
 <resources>
-    <string name="app_name">RankMaster</string>
-    <string name="action_settings">Settings</string>
-    <string name="edit_message">Enter a Message</string>
-    <string name="button_send">Send</string>
-    <string name="title_activity_display_message">Main Message</string>
+    <string name="app_name">Rank Master</string>
+
     <string name="valueStatisticMaxLabel">Max Value (empty if none)</string>
     <string name="valueStatisticNameLabel">Name</string>
     <string name="valueStatisticLimitToIntegerLabel">Limit to Whole Numbers</string>
     <string name="valueStatisticMinLabel">Min Value (empty if none)</string>
     <string name="valueStatisticDecimalLabel">Decimal Places to Display</string>
     <string name="valueStatisticDiplayName">Value</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
     <string name="sum_highest">Highest</string>
@@ -22,6 +16,6 @@
     <string-array name="sum_ranking_type">
         <item>@string/sum_highest</item>
         <item>@string/sum_lowest</item>
-        <item>@string/sum_proximity</item>
+        <!-- <item>@string/sum_proximity</item> Currently broken -->
     </string-array>
 </resources>
