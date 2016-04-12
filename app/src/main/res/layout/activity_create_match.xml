@@ -48,7 +48,8 @@
         android:id="@+id/button3"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:backgroundTint="#64ff95"
-        android:onClick="createMatch"/>
+        android:onClick="createMatch"
+        android:textColor="#ffffff"
+        android:background="?attr/colorPrimary" />
 
 </RelativeLayout>
