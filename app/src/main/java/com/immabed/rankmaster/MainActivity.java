@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
         LinearLayout layout = (LinearLayout)findViewById(R.id.table_list_layout);
         //Ensure prompt text is invisible to start
-        findViewById(R.id.no_table_text).setVisibility(View.VISIBLE);
+        findViewById(R.id.no_table_text).setVisibility(View.INVISIBLE);
         //Remove any residual RankTable buttons
         layout.removeAllViews();
 

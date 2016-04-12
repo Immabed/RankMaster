@@ -8,6 +8,16 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_main">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:padding="10dp"
+        android:textAlignment="center"
+        android:text="You have no Rank Tables, you can create one by clicking on 'Create New Table'!"
+        android:id="@+id/no_table_text"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
@@ -16,18 +26,11 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            android:text="You have no Rank Tables, you can create one by clicking on 'Create New Table'!"
-            android:id="@+id/no_table_text"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/cell_border"
             android:id="@+id/table_list_layout"></LinearLayout>
     </ScrollView>
 

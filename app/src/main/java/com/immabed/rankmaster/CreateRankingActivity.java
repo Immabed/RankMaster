@@ -99,6 +99,7 @@ public class CreateRankingActivity extends FragmentActivity
             // Requires at least one ranking rule
             Context context = getApplicationContext();
             Toast.makeText(context, "At least one ranking rule is required.", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         for (CreateRankingFragment fragment: rankingFragments) {
@@ -137,6 +138,7 @@ public class CreateRankingActivity extends FragmentActivity
             // Requires at least one statistic.
             Context context = getApplicationContext();
             Toast.makeText(context, "At least one statistic definition is required.", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         ArrayList<StatisticSpec> statisticSpecs = new ArrayList<>();

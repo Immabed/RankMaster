@@ -80,7 +80,7 @@ public class RankTable implements Serializable{
     public void addRanking(Ranking ranking) throws RankingDoesNotShareRankTableException {
         //TODO: check if ranktable is this
         if (mainRanking == null) {
-            if (mainRanking.getRankTableId().equals(id))
+            if (ranking.getRankTableId().equals(id))
                 mainRanking = ranking;
             else
                 throw new RankingDoesNotShareRankTableException(
