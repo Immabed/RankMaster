@@ -47,6 +47,7 @@ public class CreateMatchActivity extends AppCompatActivity implements
         // Populate members
         Intent intent = getIntent();
         rankTable = (RankTable)intent.getSerializableExtra(TABLE_ARG);
+
     }
 
     /**
